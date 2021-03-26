@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fitin"
-version = "0.1.0"
+version = "0.2.0"
 description = "Simple config management, making it easy to write services that fit in."
 authors = ["peder2911 <pglandsverk@gmail.com>"]
 license = "MIT"

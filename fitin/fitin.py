@@ -41,8 +41,9 @@ def azure_keyvault_secret_resolver(keyvault_url,credentials=None):
     client = SecretClient(keyvault_url,credentials)
 
     def return_config(k):
+        fixed_key = k.replace("_","-").lower() # keyvault does not allow _
         try:
-            return client.get_secret(k).value
+            return client.get_secret(fixed_key).value
         except ResourceNotFoundError as rnfe:
             raise KeyError from rnfe
 
