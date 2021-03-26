@@ -20,7 +20,7 @@ class MockConfigClient():
 
 class MockSecretClient():
     mock_remote_secrets = {
-            "super":"secret",
+            "super-secret":"secret",
             "appconfig-connection-string":"pleaselogmein"
         }
     def __init__(self,url,creds):
@@ -34,9 +34,11 @@ class TestFitin(unittest.TestCase):
         resolver = dict_resolver({"foo":"bar"})
         self.assertEqual(resolver("foo"),"bar")
 
+    @patch("fitin.fitin.AzureAppConfigurationClient",MockConfigClient)
+    @patch("fitin.fitin.SecretClient",MockSecretClient)
+    @patch("fitin.fitin.DefaultAzureCredential",lambda: True)
     def test_views_config(self):
-        with patch("fitin.fitin.AzureAppConfigurationClient",MockConfigClient),patch("fitin.fitin.SecretClient",MockSecretClient),patch("fitin.fitin.DefaultAzureCredential",lambda: True):
-            try:
-                views_config("https://mykeyvault.vault.azure.net")
-            except Exception as e:
-                self.fail(str(e))
+        try:
+            views_config("https://mykeyvault.vault.azure.net")
+        except Exception as e:
+            self.fail(str(e))
