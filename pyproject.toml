@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "fitin"
+version = "0.1.0"
+description = "Simple config management, making it easy to write services that fit in."
+authors = ["peder2911 <pglandsverk@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+azure-appconfiguration = "^1.1.1"
+azure-keyvault-secrets = "^4.2.0"
+azure-identity = "^1.5.0"
+environs = "^9.3.1"
+
+[tool.poetry.dev-dependencies]
+jedi = "^0.18.0"
+pylint = "^2.7.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
