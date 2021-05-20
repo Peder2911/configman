@@ -1,5 +1,4 @@
-import os
-
+from functools import lru_cache
 from azure.appconfiguration import AzureAppConfigurationClient
 from azure.keyvault.secrets import SecretClient
 from azure.core.exceptions import ResourceNotFoundError
@@ -36,7 +35,7 @@ def azure_appconfig_resolver(connection_string):
 def azure_keyvault_secret_resolver(keyvault_url,credentials=None):
 
     if credentials is None:
-        credentials = DefaultAzureCredential() 
+        credentials = DefaultAzureCredential()
 
     client = SecretClient(keyvault_url,credentials)
 
@@ -58,7 +57,7 @@ def environs_resolver():
         try:
             return env(k)
         except EnvError as ee:
-            raise KeyError from ee 
+            raise KeyError from ee
 
     return return_config
 
@@ -66,4 +65,4 @@ def views_config(keyvault_url,credentials=None):
     environs = environs_resolver()
     secrets = azure_keyvault_secret_resolver(keyvault_url,credentials)
     appconfig = azure_appconfig_resolver(secrets("appconfig-connection-string"))
-    return seek_config([environs,appconfig,secrets])
+    return lru_cache(maxsize=None)(seek_config([environs,appconfig,secrets]))
